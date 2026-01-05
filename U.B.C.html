@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Universal Base Converter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #2b2b3a;
+        color: #f0f0f0;
+        text-align: center;
+        padding: 5vw 3vw;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    h1 {
+        font-size: 6vw;
+        margin-bottom: 4vw;
+        color: #f5f5f5;
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2vw;
+        width: 100%;
+    }
+
+    input, select {
+        padding: 1.2em;
+        font-size: 1em;
+        border-radius: 6px;
+        border: none;
+        width: 80%;
+        max-width: 400px;
+        box-sizing: border-box;
+        background-color: #3a3a4a;
+        color: #f0f0f0;
+    }
+
+    input::placeholder {
+        color: #aaa;
+    }
+
+    button {
+        display: block;
+        margin: 2vw auto 0 auto;
+        padding: 1.2em 2em;
+        font-size: 1em;
+        border-radius: 6px;
+        border: none;
+        background-color: #4f8ef7;
+        color: #fff;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background-color: #3b6cd1;
+    }
+
+    .results {
+        background: #3a3a4a;
+        border-radius: 12px;
+        padding: 4vw;
+        margin-top: 3vw;
+        display: none;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 0 15px #00000080;
+        word-wrap: break-word;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .results p {
+        margin: 1.5vw 0;
+        font-size: 4vw;
+    }
+
+    footer {
+        margin-top: auto;
+        padding: 1.5vw 0;
+        font-size: 3vw;
+        color: #aaa;
+    }
+
+    @media screen and (min-width: 768px) {
+        input, select {
+            width: 45%;
+            max-width: 350px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+        }
+
+        .results p {
+            font-size: 1.2em;
+        }
+
+        button {
+            width: auto;
+        }
+
+        .input-group {
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        footer {
+            font-size: 1em;
+        }
+    }
+</style>
+</head>
+<body>
+
+<h1>Universal Base Converter</h1>
+
+<div class="input-group">
+    <input id="inputValue" type="text" maxlength="20" placeholder="Type something...">
+    <select id="modeSelect">
+        <option value="decimal">Decimal</option>
+        <option value="binary">Binary</option>
+        <option value="octal">Octal</option>
+        <option value="hex">Hexadecimal</option>
+        <option value="char">Character / Symbol / Alphabet</option>
+    </select>
+</div>
+
+<button onclick="convert()">Convert</button>
+
+<div class="results" id="output">
+    <p id="original"></p>
+    <p id="decimal"></p>
+    <p id="binary"></p>
+    <p id="octal"></p>
+    <p id="hex"></p>
+    <p id="char"></p>
+</div>
+
+<footer>© Universal Base Converter | Danesh</footer>
+
+<script>
+function convert() {
+    let input = document.getElementById("inputValue").value.trim();
+    let mode = document.getElementById("modeSelect").value;
+
+    if (!input) {
+        alert("Please type something!");
+        return;
+    }
+
+    let value;
+    switch(mode) {
+        case "decimal":
+            value = parseInt(input, 10);
+            break;
+        case "binary":
+            value = parseInt(input, 2);
+            break;
+        case "octal":
+            value = parseInt(input, 8);
+            break;
+        case "hex":
+            value = parseInt(input, 16);
+            break;
+        case "char":
+            value = input.charCodeAt(0);
+            break;
+        default:
+            alert("Unknown mode!");
+            return;
+    }
+
+    if (isNaN(value)) {
+        alert("Invalid input for the selected mode!");
+        return;
+    }
+
+    let character = (value >= 32 && value <= 126) ? String.fromCharCode(value) : "Non-printable";
+
+    document.getElementById("output").style.display = "block";
+    document.getElementById("original").textContent = "Original: " + input;
+    document.getElementById("decimal").textContent = "Decimal: " + value;
+    document.getElementById("binary").textContent  = "Binary: " + value.toString(2);
+    document.getElementById("octal").textContent   = "Octal: " + value.toString(8);
+    document.getElementById("hex").textContent     = "Hexadecimal: " + value.toString(16).toUpperCase();
+    document.getElementById("char").textContent    = "Character / Symbol / Alphabet: " + character;
+}
+
+document.getElementById("inputValue").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        convert();
+    }
+});
+</script>
+
+</body>
+</html>
+
+
+
